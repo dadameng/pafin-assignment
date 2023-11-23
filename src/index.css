@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  .cus-text-tag {
+      @apply font-jp-semi-medium font-medium;
+  }
+  .cus-text-content {
+      @apply font-jp-semi-regular font-normal;
+  }
+  .cus-text-title {
+      @apply font-jp-semi-bold font-bold;
+  }
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#root {
+    min-height: 100vh; 
+    width: 100%;
+    background-color: var(--bg-primary);
+}
+
+:root {
+    --bg-primary: #EEF4FA;
+    --container-drop-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.06);
+    --field-active: 0px 0px 4px 8px rgba(66, 153, 225, 1);
+    --green-500: rgba(56, 201, 124, 1);
+    --grey-400: rgba(140, 149, 157, 1);
+    --grey-800: rgba(89, 98, 105, 1);
+    --grid-bg: rgba(238, 244, 250, 1);
+    --info-50: rgba(241, 245, 254, 1);
+    --info-500: rgba(39, 110, 241, 1);
+    --info-600: rgba(30, 84, 183, 1);
+    --neutral-400: rgba(236, 238, 239, 1);
+    --neutral-500: rgba(222, 225, 227, 1);
+    --primary-100: rgba(217, 235, 249, 1);
+    --primary-500: rgba(66, 153, 225, 1);
+    --primary-custom-color: #4299E1;
+    --text-main: rgba(46, 63, 81, 1);
+    --text-content: #596269;
+    --textsub: rgba(175, 188, 206, 1);
+    --white-100: rgba(255, 255, 255, 1);
+    --white-50: rgba(255, 255, 255, 0.5);
+  }
+
