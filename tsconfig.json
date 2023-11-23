@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".", 
     "paths": {
-      "@/*": ["src/*"] // 修改这里
+      "@/*": ["src/*"]
     }
   },
   "include": ["src/**/*", "__tests__/**/*"],

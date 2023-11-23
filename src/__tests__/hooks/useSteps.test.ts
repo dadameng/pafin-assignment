@@ -1,21 +1,12 @@
-import React, { useCallback } from 'react'
-import {
-  Steps,
-  StepType,
-  TaskClickHandler,
-  TaskValidationHandler,
-} from '@/components/Step'
-import { UserCircleGear, Gear, ListChecks } from '@phosphor-icons/react'
-import { StepPageSiderBar } from '@/components/StepPageSiderBar'
-import { Layout } from 'antd'
-import classNames from 'classnames'
+import { useSteps } from '@/components/Step/hooks'
+import { StepVerificationType } from '@/components/Step'
+import { renderHook, act } from '@testing-library/react'
 
-export const StepPage = () => {
-  const steps: StepType[] = [
+describe('useSteps Hook', () => {
+  const initialSteps = [
     {
-      headIcon: (
-        <UserCircleGear size={26} color="var(--primary-custom-color)" />
-      ),
+      headIcon: '',
+      defaultCollapse: false,
       stepIndex: 0,
       stepTitle: '取引の情報を入力しましょう',
       stepDesc: '仮想通貨の損益計算には過去すべての取引履歴が必要になります。',
@@ -39,8 +30,8 @@ export const StepPage = () => {
       ],
     },
     {
-      headIcon: <Gear size={26} color="var(--primary-custom-color)" />,
-
+      headIcon: '',
+      defaultCollapse: false,
       stepIndex: 1,
       stepTitle: '足りていない情報を追加しましょう',
       stepDesc:
@@ -68,7 +59,7 @@ export const StepPage = () => {
     },
     {
       defaultCollapse: true,
-      headIcon: <ListChecks size={26} color="var(--primary-custom-color)" />,
+      headIcon: '',
       stepIndex: 2,
       stepTitle: '計算結果を確認しましょう',
       stepDesc:
@@ -85,45 +76,58 @@ export const StepPage = () => {
       ],
     },
   ]
-
-  const handleClickStep = useCallback<TaskClickHandler>(
-    (taskValue, updateTask) => {
-      const newContent =
-        taskValue.validationContent.length > 0
-          ? []
-          : ['13 取引所/ブロックチェーン選択済み']
-      updateTask(newContent, taskValue.itemIndex, taskValue.stepIndex)
-    },
-    [],
-  )
-  const handleValidation = useCallback<TaskValidationHandler>(taskValue => {
+  const mockOnClickTask = jest.fn()
+  const mockOnValidationFunc = (taskValue: StepVerificationType) => {
     return taskValue.validationContent.length > 0
-  }, [])
+  }
 
-  return (
-    <Layout className="bg-app-bg-primary h-full px-[9vw] py-16">
-      <Layout.Header className="bg-app-bg-primary px-0 mb-8">
-        <div className="cus-text-title text-text-main text-3xl text-left">
-          クリプタクトで計算を始めてみましょう
-        </div>
-      </Layout.Header>
-      <Layout className="bg-app-bg-primary">
-        <Layout.Content>
-          <Steps
-            initialState={steps}
-            onClickTask={handleClickStep}
-            onValidationFunc={handleValidation}
-          />
-        </Layout.Content>
-        <Layout.Sider
-          className={classNames('!bg-app-bg-primary')}
-          breakpoint="xs"
-          collapsedWidth="0"
-          width={180}
-        >
-          <StepPageSiderBar />
-        </Layout.Sider>
-      </Layout>
-    </Layout>
-  )
-}
+  it('initializes with the correct state based on initial steps', () => {
+    const { result } = renderHook(() =>
+      useSteps({
+        initialState: initialSteps,
+        onClickTask: mockOnClickTask,
+        onValidationFunc: mockOnValidationFunc,
+      }),
+    )
+
+    expect(result.current.stepValues).toEqual(initialSteps)
+    expect(result.current.currentStep).toBe(0)
+    expect(result.current.stepsProgressResult[0].completeCount).toBe(1)
+    expect(result.current.stepsProgressResult[0].progress).toBe(50)
+    expect(result.current.stepsProgressResult[0].totalCount).toBe(2)
+    expect(result.current.stepsProgressResult[0].currentProcessIndex).toBe(1)
+  })
+
+  it('handles task update and click correctly', () => {
+    const { result } = renderHook(() =>
+      useSteps({
+        initialState: initialSteps,
+        onClickTask: mockOnClickTask,
+        onValidationFunc: mockOnValidationFunc,
+      }),
+    )
+    const newContent = ['new content test']
+    act(() => {
+      result.current.updateTask(newContent, 0, 1)
+    })
+
+    const newValues = [...initialSteps]
+    newValues[0]['validations'][1].validationContent = newContent
+    expect(result.current.stepValues).toEqual(newValues)
+    expect(result.current.stepsProgressResult[0].completeCount).toEqual(2)
+    expect(result.current.stepsProgressResult[0].progress).toEqual(100)
+    expect(result.current.currentStep).toBe(1)
+
+    act(() => {
+      result.current.handleClickTask({
+        stepIndex: 2,
+        itemTitle: '計算結果を確認しましょう',
+        itemIndex: 0,
+        verficationDesc:
+          'アップロードされた全ての取引を集計する過程で、クリプタクトが処理出来なかった取引は、「未分類取引」として分類されます。未分類取引は損益計算から除外されるため、ウィザード機能を活用し必ず解消してください。',
+        validationContent: [],
+      })
+    })
+    expect(mockOnClickTask).toHaveBeenCalled()
+  })
+})

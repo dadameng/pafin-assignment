@@ -32,8 +32,8 @@ export type StepContainerProps = {
 
 export type TaskHandler = (
   content: StepVerificationType['validationContent'],
-  itemIndex: number,
   stepIndex: number,
+  itemIndex: number,
 ) => void
 
 export type TaskClickHandler = (

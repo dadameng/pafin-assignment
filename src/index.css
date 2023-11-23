@@ -31,6 +31,7 @@ html, body {
     --field-active: 0px 0px 4px 8px rgba(66, 153, 225, 1);
     --green-500: rgba(56, 201, 124, 1);
     --grey-400: rgba(140, 149, 157, 1);
+    --grey-500: #8C959D;
     --grey-800: rgba(89, 98, 105, 1);
     --grid-bg: rgba(238, 244, 250, 1);
     --info-50: rgba(241, 245, 254, 1);

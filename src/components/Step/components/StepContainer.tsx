@@ -31,9 +31,13 @@ export const StepContainer = ({
           headIcon={headIcon}
           headTitle={stepTitle}
           subTitle={stepDesc}
-          validTaskCount={context?.stepsProgressResult[stepIndex].completeCount}
-          totalTaskCount={context?.stepsProgressResult[stepIndex].totalCount}
-          progress={context?.stepsProgressResult[stepIndex].progress}
+          validTaskCount={
+            context?.stepsProgressResult[stepIndex].completeCount ?? 0
+          }
+          totalTaskCount={
+            context?.stepsProgressResult[stepIndex].totalCount ?? 0
+          }
+          progress={context?.stepsProgressResult[stepIndex].progress ?? 0}
         />
       ),
       children: (
@@ -69,10 +73,13 @@ export const StepContainer = ({
           items={items}
           defaultActiveKey={[defaultCollapse ? '' : CollapseActiveKey]}
           showArrow={false}
-          onChange={(activeKey: string[]) => {
-            const hasValue = activeKey.some(ele => {
-              return ele === CollapseActiveKey
-            })
+          onChange={activeKey => {
+            let hasValue = false
+            if (Array.isArray(activeKey)) {
+              hasValue = activeKey.includes(CollapseActiveKey)
+            } else {
+              hasValue = activeKey === CollapseActiveKey
+            }
             setIsCollapsed(!hasValue)
           }}
         />

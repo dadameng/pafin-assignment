@@ -16,6 +16,8 @@ import type { StepVerificationType } from '../types'
 import classNames from 'classnames'
 import { StepsContext } from '../StepsContext'
 
+const StepSelectButtonTitle = '選択する'
+
 export interface StepItemProps {
   enableEdit: boolean
   bizData: StepVerificationType
@@ -72,7 +74,7 @@ export const StepItem = ({
         },
       )}
     >
-      <div className="gap-2 self-stretch flex items-start flex-col flex-1 grow mr-2 md:mr-10">
+      <div className="flex flex-col items-start flex-1 grow gap-2 self-stretch mr-2 md:mr-10">
         <div
           className={classNames('flex items-center w-full gap-2', {
             'opacity-40': !enableEdit,
@@ -89,7 +91,7 @@ export const StepItem = ({
             {itemTitle}
           </div>
         </div>
-        <div className="pl-8 gap-2 flex flex-col">
+        <div className="flex flex-col gap-2 pl-8">
           <div
             className={classNames(
               'flex flex-wrap transition-opacity duration-300',
@@ -150,8 +152,8 @@ export const StepItem = ({
         >
           <Button type="primary" onClick={handleSelect}>
             <div className="flex items-center">
-              選択する
-              <ArrowRight></ArrowRight>
+              {StepSelectButtonTitle}
+              <ArrowRight />
             </div>
           </Button>
         </ConfigProvider>

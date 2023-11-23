@@ -1,7 +1,6 @@
-import React from 'react'
-import { StepPage } from '@/components/StepPage'
+import { CryptactPage } from '@/pages'
 
 const App = () => {
-  return <StepPage />
+  return <CryptactPage />
 }
 export default App

@@ -5,6 +5,7 @@ import type {
   StepType,
   TaskHandler,
   StepsProgressResult,
+  StepVerificationType,
 } from './types'
 
 export const useSteps = (props: StepHookProp) => {
@@ -34,7 +35,7 @@ export const useSteps = (props: StepHookProp) => {
     useState<StepsProgressResult>(updateProgressResult(initialState))
 
   const updateTask = useCallback<TaskHandler>(
-    (content, itemIndex, stepIndex) => {
+    (content, stepIndex, itemIndex) => {
       const newStep = [...stepValues]
       newStep[stepIndex]['validations'][itemIndex].validationContent = content
       const newStepProgressResult = updateProgressResult(newStep)
